@@ -1,7 +1,7 @@
 {
     "interval_check": 1,
     "advanced_check": false, 
-    "subtitle": "SGC - Sistema Gerenciador de contratos",
+    "subtitle": "",
     "environments": ["Development", "QA"],
     "services":[
         {
@@ -9,11 +9,11 @@
             "environments": [
                 {
                     "name": "Development",
-                    "url": "https://vale-sgc-mob-dev.azurewebsites.net/sgcmob-api/api/v1/health-check"
+                    "url": ""
                 },
                 {
                     "name": "QA",
-                    "url": "https://vale-sgc-mob-qa.azurewebsites.net/sgcmob-api/api/v1/health-check"
+                    "url": ""
                 }
             ]
         },
@@ -22,7 +22,7 @@
             "environments": [
                 {
                     "name": "Development",
-                    "url": "https://valesgcdev.z20.web.core.windows.net/SGCMOB"
+                    "url": ""
                 }
             ]
         }
