@@ -1,0 +1,30 @@
+{
+    "interval_check": 1,
+    "advanced_check": false, 
+    "subtitle": "SGC - Sistema Gerenciador de contratos",
+    "environments": ["Development", "QA"],
+    "services":[
+        {
+            "name": "SGC Mobilização API",
+            "environments": [
+                {
+                    "name": "Development",
+                    "url": "https://vale-sgc-mob-dev.azurewebsites.net/sgcmob-api/api/v1/health-check"
+                },
+                {
+                    "name": "QA",
+                    "url": "https://vale-sgc-mob-qa.azurewebsites.net/sgcmob-api/api/v1/health-check"
+                }
+            ]
+        },
+        {
+            "name": "Mobilização Frontend",
+            "environments": [
+                {
+                    "name": "Development",
+                    "url": "https://valesgcdev.z20.web.core.windows.net/SGCMOB"
+                }
+            ]
+        }
+    ] 
+}
