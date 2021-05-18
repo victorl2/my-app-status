@@ -1,1 +1,1 @@
-# my-app-status
+# MyAppStatus
