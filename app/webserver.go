@@ -5,6 +5,7 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"time"
 )
 
 var tmpl *template.Template
@@ -22,10 +23,19 @@ func initTemplate() *template.Template {
 
 //request handler for serving the status homepage
 func homePageHandler(w http.ResponseWriter, r *http.Request) {
-	service := Service{Name: "Test"}
-	if err := tmpl.Execute(w, service); err != nil {
-		json.NewEncoder(w).Encode(Service{Name: "Test"})
+	if err := tmpl.Execute(w, *configuration); err != nil {
+		log.Println(err.Error())
+		json.NewEncoder(w).Encode(configuration)
 	}
+}
+
+func statusUpdater(waitInterval int) {
+	go func() {
+		for {
+			ValidateServices(configuration)
+			time.Sleep(time.Duration(waitInterval*60) * time.Second)
+		}
+	}()
 }
 
 //StartServer initializes the webserver serving a simple html page
@@ -37,6 +47,9 @@ func StartServer() {
 		panic("The initial setup failed, check if there is a problem with the app configuration or template values")
 	}
 
+	statusUpdater(configuration.IntervalCheck)
+
+	http.Handle("/templates/", http.StripPrefix("/templates/", http.FileServer(http.Dir("templates"))))
 	http.HandleFunc("/", homePageHandler)
 	http.ListenAndServe(":8080", nil)
 }

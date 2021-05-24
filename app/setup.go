@@ -2,9 +2,9 @@ package app
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"os"
+	"strings"
 )
 
 type Config struct {
@@ -13,6 +13,25 @@ type Config struct {
 	AdvancedCheck bool      `json:"advanced_check"`
 	EnvsNames     []string  `json:"environments"`
 	Apps          []Service `json:"services"`
+	LogoURL       string    `json:"logo_url"`     //redirect url when click on the logo
+	LogoSRCURL    string    `json:"logo_src_url"` //url to the logo
+	GlobalStatus  int
+}
+
+func (config *Config) UpdateAppStatus(serviceName string, envIndex, newStatus int) {
+	for _, service := range config.Apps {
+		if service.Name == serviceName && service.Envs[envIndex].Status != newStatus {
+			service.Envs[envIndex].Status = newStatus
+			log.Printf("%v(%v) status updated to: %v\n", service.Name, config.EnvsNames[envIndex], service.Envs[envIndex].Status)
+		}
+	}
+}
+
+func (config *Config) UpdateGlobalStatus(newStatus int) {
+	if config.GlobalStatus != newStatus {
+		config.GlobalStatus = newStatus
+		log.Printf("Global application status changed to %v", newStatus)
+	}
 }
 
 type Service struct {
@@ -37,12 +56,27 @@ func LoadGlobalConfig() *Config {
 
 	jsonParser := json.NewDecoder(configFile)
 	jsonParser.Decode(&config)
-	fmt.Printf("%+v\n", config)
-	return &config
+
+	loadedConfig := &config
+	if !validateConfig(loadedConfig) {
+		return nil
+	}
+	return loadedConfig
 }
 
-func validateServices(config *Config) bool {
+func validateConfig(config *Config) bool {
 	if config == nil {
+		log.Print("Invalid configuration, empty information provided")
 		return false
 	}
+
+	for _, service := range config.Apps {
+		for _, environment := range service.Envs {
+			if !strings.Contains(environment.URL, "http://") && !strings.Contains(environment.URL, "https://") {
+				log.Printf("The service %s has a invalid URL in the configuration file, it dont contain the prefix http or https", service.Name)
+				return false
+			}
+		}
+	}
+	return true
 }

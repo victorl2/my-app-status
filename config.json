@@ -1,30 +1,42 @@
 {
     "interval_check": 1,
-    "advanced_check": false, 
-    "subtitle": "",
-    "environments": ["Development", "QA"],
-    "services":[
+    "advanced_check": false,
+    "logo_src_url": "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png",
+    "logo_url": "http://google.com",
+    "subtitle": "Sample subtitle to describe your application",
+    "environments": [
+        "Development",
+        "QA",
+        "Production"
+    ],
+    "services": [
         {
-            "name": "SGC Mobilização API",
+            "name": "A Custom API",
             "environments": [
                 {
-                    "name": "Development",
-                    "url": ""
+                    "url": "https://google.com"
                 },
                 {
-                    "name": "QA",
-                    "url": ""
+                    "url": "https://google.com"
+                },
+                {
+                    "url": "https://google.com"
                 }
-            ]
+            ]   
         },
         {
-            "name": "Mobilização Frontend",
+            "name": "B Custom API",
             "environments": [
                 {
-                    "name": "Development",
-                    "url": ""
+                    "url": "https://google.com"
+                },
+                {
+                    "url": "https://google.com"
+                },
+                {
+                    "url": "https://google.com"
                 }
             ]
         }
-    ] 
+    ]
 }
